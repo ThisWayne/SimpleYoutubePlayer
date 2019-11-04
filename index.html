@@ -8,17 +8,25 @@
   <div id="player"></div>
   <div>
     <input id="videoUrl" type="url" value="https://www.youtube.com/watch?v=BYJzwK4sxRg" />
-    <input id="playSpeedRate" type="number" value="3" min="0.2" max="5" />
     <button id="loadUrlBtn">載入</button>
+    <form name="playSpeedRateForm">
+      <input id="playSpeedRateSlide" type="range" value="1" min="0.2" max="4" step="0.05"
+        oninput="playSpeedRate.value = playSpeedRateSlide.value">
+      <input id="playSpeedRate" type="number" value="1" min="0.2" max="4" step="0.05"
+        oninput="playSpeedRateSlide.value = playSpeedRate.value">
+    </form>
   </div>
   <script>
     var videoUrl = document.querySelector('#videoUrl').value;
-    var playSpeedRate = parseInt(document.querySelector('#playSpeedRate').value);
 
-    document.querySelector('#loadUrlBtn').onclick = function () {
+    document.querySelector('#loadUrlBtn').addEventListener("click", function () {
       videoUrl = document.querySelector('#videoUrl').value;
       player.loadVideoById(urlToYoutubeVideoId(videoUrl));
-    };
+    });
+
+    document.querySelector('#playSpeedRateSlide').addEventListener("mouseup", updatePlaySpeed);
+    document.querySelector('#playSpeedRateSlide').addEventListener("touchend", updatePlaySpeed);
+    document.querySelector('#playSpeedRate').addEventListener("input", updatePlaySpeed);
 
     // 2. This code loads the IFrame Player API code asynchronously.
     var tag = document.createElement('script');
@@ -43,12 +51,17 @@
 
     // 4. The API will call this function when the video player is ready.
     function onPlayerReady(event) {
-      player.setPlaybackRate(playSpeedRate);
+
     }
 
     function urlToYoutubeVideoId(url) {
       var vid_regex = /(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
       return url === "" ? "" : url.match(vid_regex)[1];
+    }
+
+    function updatePlaySpeed() {
+      var speedRate = parseInt(document.querySelector('#playSpeedRate').value);
+      player.setPlaybackRate(speedRate);
     }
   </script>
 </body>
