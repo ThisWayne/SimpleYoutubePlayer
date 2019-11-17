@@ -10,9 +10,9 @@
     <input id="videoUrl" type="url" value="https://www.youtube.com/watch?v=BYJzwK4sxRg" />
     <button id="loadUrlBtn">載入</button>
     <form name="playSpeedRateForm">
-      <input id="playSpeedRateSlide" type="range" value="1" min="0.2" max="4" step="0.05"
+      <input id="playSpeedRateSlide" type="range" value="1" min="0.25" max="2" step="0.05"
         oninput="playSpeedRate.value = playSpeedRateSlide.value">
-      <input id="playSpeedRate" type="number" value="1" min="0.2" max="4" step="0.05"
+      <input id="playSpeedRate" type="number" value="1" min="0.25" max="2" step="0.05"
         oninput="playSpeedRateSlide.value = playSpeedRate.value">
     </form>
   </div>
@@ -60,7 +60,7 @@
     }
 
     function updatePlaySpeed() {
-      var speedRate = parseInt(document.querySelector('#playSpeedRate').value);
+      var speedRate = parseFloat(document.querySelector('#playSpeedRate').value);
       player.setPlaybackRate(speedRate);
     }
   </script>
