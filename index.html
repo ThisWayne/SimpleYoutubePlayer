@@ -14,7 +14,7 @@
       margin: 0;
     }
 
-    .wrapper {
+    .container {
       display: flex;
       flex-direction: column;
       width: 100%;
@@ -39,27 +39,56 @@
       height: 100%;
     }
 
-    .videoControlWrapper {
+    .video-control-wrapper {
       flex: 1 0 auto;
       width: 100%;
     }
 
-    @media screen and (max-width: 768px) {}
+    .url-load-wrapper,
+    .play-speed-rate-form {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 2rem 0px;
+    }
+
+    .url-load-wrapper>input,
+    .url-load-wrapper>button {
+      height: 3rem;
+    }
+
+    .url-load-wrapper>input,
+    .play-speed-rate-form>.play-speed-rate-slide {
+      flex: 2 2 auto;
+      margin-right: 10px;
+    }
+
+    .url-load-wrapper>input,
+    .url-load-wrapper>button,
+    .play-speed-rate {
+      font-size: 1.2rem;
+    }
+
+    .url-load-wrapper>button,
+    .play-speed-rate-form>.play-speed-rate {
+      flex: 1 1 auto;
+    }
   </style>
 </head>
 
 <body>
-  <div class="wrapper">
+  <div class="container">
     <div class="video-wrapper">
-      <div id="player" class="player"></div>
+      <div id="player"></div>
     </div>
-    <div class="videoControlWrapper">
-      <input id="videoUrl" type="url" value="https://www.youtube.com/watch?v=BYJzwK4sxRg" />
-      <button id="loadUrlBtn" style="height: 153px">載入</button>
-      <form name="playSpeedRateForm">
-        <input id="playSpeedRateSlide" type="range" value="1" min="0.25" max="2" step="0.05"
-          oninput="playSpeedRate.value = playSpeedRateSlide.value">
-        <input id="playSpeedRate" type="number" value="1" min="0.25" max="2" step="0.05"
+    <div class="video-control-wrapper">
+      <div class="url-load-wrapper">
+        <input id="videoUrl" type="url" value="https://www.youtube.com/watch?v=BYJzwK4sxRg" />
+        <button id="loadUrlBtn">載入</button>
+      </div>
+      <form name="playSpeedRateForm" class="play-speed-rate-form">
+        <input id="playSpeedRateSlide" class="play-speed-rate-slide" type="range" value="1" min="0.25" max="2"
+          step="0.05" oninput="playSpeedRate.value = playSpeedRateSlide.value">
+        <input id="playSpeedRate" class="play-speed-rate" type="number" value="1" min="0.25" max="2" step="0.05"
           oninput="playSpeedRateSlide.value = playSpeedRate.value">
       </form>
     </div>
