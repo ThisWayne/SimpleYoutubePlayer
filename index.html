@@ -118,11 +118,16 @@
       player.loadVideoById(urlToYoutubeVideoId(videoUrl));
     });
 
-    document.querySelector('#playSpeedRate').addEventListener("input", updatePlaySpeed);
     document.querySelector('#playSpeedRate').addEventListener("change", updatePlaySpeed);
 
-    document.querySelector('#speedDown').addEventListener("click", function () { document.querySelector('#playSpeedRate').stepDown(); updatePlaySpeed(); });
-    document.querySelector('#speedUp').addEventListener("click", function () { document.querySelector('#playSpeedRate').stepUp(); updatePlaySpeed(); });
+    document.querySelector('#speedDown').addEventListener("click", function () {
+      document.querySelector('#playSpeedRate').stepDown();
+      document.querySelector('#playSpeedRate').dispatchEvent(new Event("change"));
+    });
+    document.querySelector('#speedUp').addEventListener("click", function () {
+      document.querySelector('#playSpeedRate').stepUp();
+      document.querySelector('#playSpeedRate').dispatchEvent(new Event("change"));
+    });
 
     var tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
