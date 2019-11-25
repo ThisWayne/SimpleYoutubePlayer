@@ -14,6 +14,12 @@
       margin: 0;
     }
 
+    input,
+    button {
+      font-size: 1.2rem;
+      height: 3rem;
+    }
+
     .container {
       display: flex;
       flex-direction: column;
@@ -45,35 +51,42 @@
     }
 
     .url-load-wrapper,
-    .play-speed-rate-form {
+    .play-speed-rate-container {
       display: flex;
       flex-wrap: wrap;
+    }
+
+    .url-load-wrapper,
+    .play-speed-rate-container {
       margin: 2rem 0px;
     }
 
     .url-load-wrapper>input,
     .url-load-wrapper>button,
-    .play-speed-rate-slide,
-    .play-speed-rate {
-      height: 3rem;
+    .play-speed-rate-control>button,
+    .play-speed-rate-container>input {
       margin: 0.5rem 0px;
     }
 
     .url-load-wrapper>input,
-    .play-speed-rate-form>.play-speed-rate-slide {
+    .play-speed-rate-control {
       flex: 2 2 auto;
       margin-right: 10px;
     }
 
-    .url-load-wrapper>input,
     .url-load-wrapper>button,
     .play-speed-rate {
-      font-size: 1.2rem;
+      flex: 1 1 auto;
     }
 
-    .url-load-wrapper>button,
-    .play-speed-rate-form>.play-speed-rate {
+    .play-speed-rate-control {
+      display: flex;
+    }
+
+    .play-speed-rate-control>button {
       flex: 1 1 auto;
+      margin: 0px 5px;
+      height: 100%;
     }
   </style>
 </head>
@@ -88,12 +101,13 @@
         <input id="videoUrl" type="url" value="https://www.youtube.com/watch?v=BYJzwK4sxRg" />
         <button id="loadUrlBtn">載入</button>
       </div>
-      <form name="playSpeedRateForm" class="play-speed-rate-form">
-        <input id="playSpeedRateSlide" class="play-speed-rate-slide" type="range" value="1" min="0.25" max="2"
-          step="0.05" oninput="playSpeedRate.value = playSpeedRateSlide.value">
-        <input id="playSpeedRate" class="play-speed-rate" type="number" value="1" min="0.25" max="2" step="0.05"
-          oninput="playSpeedRateSlide.value = playSpeedRate.value">
-      </form>
+      <div class="play-speed-rate-container">
+        <div class="play-speed-rate-control">
+          <button id="speedDown">減速-</button>
+          <button id="speedUp">加速+</button>
+        </div>
+        <input id="playSpeedRate" class="play-speed-rate" type="number" value="1" min="0.25" max="2" step="0.05">
+      </div>
     </div>
   </div>
   <script>
@@ -104,9 +118,11 @@
       player.loadVideoById(urlToYoutubeVideoId(videoUrl));
     });
 
-    document.querySelector('#playSpeedRateSlide').addEventListener("mouseup", updatePlaySpeed);
-    document.querySelector('#playSpeedRateSlide').addEventListener("touchend", updatePlaySpeed);
     document.querySelector('#playSpeedRate').addEventListener("input", updatePlaySpeed);
+    document.querySelector('#playSpeedRate').addEventListener("change", updatePlaySpeed);
+
+    document.querySelector('#speedDown').addEventListener("click", function () { document.querySelector('#playSpeedRate').stepDown(); updatePlaySpeed(); });
+    document.querySelector('#speedUp').addEventListener("click", function () { document.querySelector('#playSpeedRate').stepUp(); updatePlaySpeed(); });
 
     var tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
