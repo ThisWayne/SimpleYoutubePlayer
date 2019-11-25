@@ -1,7 +1,8 @@
 # SimpleYoutubePlayer
+
 Play youtube video in any speed.
 
-# ToDo:
-* responsive web
+## ToDo
+
 * enhance UI
 * AB repeat
