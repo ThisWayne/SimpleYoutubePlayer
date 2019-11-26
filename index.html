@@ -17,7 +17,8 @@
     input,
     button {
       font-size: 1.2rem;
-      height: 3rem;
+      min-width: 60px;
+      min-height: 60px;
     }
 
     .container {
@@ -51,20 +52,20 @@
     }
 
     .url-load-wrapper,
-    .play-speed-rate-container {
+    .play-speed-rate-control-wrapper {
       display: flex;
       flex-wrap: wrap;
     }
 
     .url-load-wrapper,
-    .play-speed-rate-container {
-      margin: 2rem 0px;
+    .play-speed-rate-control-wrapper {
+      margin: 0.5rem 0px;
     }
 
     .url-load-wrapper>input,
     .url-load-wrapper>button,
     .play-speed-rate-control>button,
-    .play-speed-rate-container>input {
+    .play-speed-rate-control-wrapper>input {
       margin: 0.5rem 0px;
     }
 
@@ -99,12 +100,12 @@
     <div class="video-control-wrapper">
       <div class="url-load-wrapper">
         <input id="videoUrl" type="url" value="https://www.youtube.com/watch?v=BYJzwK4sxRg" />
-        <button id="loadUrlBtn">載入</button>
+        <button id="loadUrlBtn">Load</button>
       </div>
-      <div class="play-speed-rate-container">
+      <div class="play-speed-rate-control-wrapper">
         <div class="play-speed-rate-control">
-          <button id="speedDown">減速-</button>
-          <button id="speedUp">加速+</button>
+          <button id="speedDown">Speed -</button>
+          <button id="speedUp">Speed +</button>
         </div>
         <input id="playSpeedRate" class="play-speed-rate" type="number" value="1" min="0.25" max="2" step="0.05">
       </div>
@@ -138,8 +139,12 @@
     var player;
     function onYouTubeIframeAPIReady() {
       player = new YT.Player('player', {
-        playerVars: { 'playsinline': '1' },
         videoId: urlToYoutubeVideoId(videoUrl),
+        playerVars: {
+          playsinline: '1',
+          start: 0,
+          // end: 5,
+        },
         events: {
           'onReady': onPlayerReady,
           'onStateChange': onPlayerStateChange
