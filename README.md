@@ -6,3 +6,4 @@ Play youtube video in any speed.
 
 * enhance UI
 * AB repeat
+* loop switch
