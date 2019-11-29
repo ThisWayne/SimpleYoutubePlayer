@@ -3,184 +3,7 @@
 <head>
   <title>Simple Youtube Player</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body,
-    html {
-      height: 100%;
-      margin: 0;
-    }
-
-    input,
-    button {
-      font-size: 1.2rem;
-      min-width: 60px;
-      min-height: 60px;
-    }
-
-    .container {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      height: 100%;
-      padding: 5px;
-    }
-
-    .video-wrapper {
-      flex: 0 0 auto;
-      position: relative;
-      /* 16:9 */
-      padding-bottom: 56.25%;
-      margin-bottom: 5px;
-      height: 0;
-    }
-
-    .video-wrapper iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    .video-control-wrapper {
-      flex: 1 0 auto;
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-    }
-
-    .video-control-wrapper>div {
-      margin: 0.5rem 0px;
-    }
-
-    .url-load-wrapper,
-    .play-speed-rate-control-wrapper {
-      display: flex;
-      flex-wrap: wrap;
-    }
-
-    .url-load-wrapper>input,
-    .url-load-wrapper>button,
-    .play-speed-rate-control>button,
-    .play-speed-rate-control-wrapper>input {
-      margin: 0.5rem 0px;
-    }
-
-    .url-load-wrapper>input,
-    .play-speed-rate-control {
-      flex: 2 2 auto;
-      margin-right: 10px;
-    }
-
-    .url-load-wrapper>button,
-    .play-speed-rate {
-      flex: 1 1 auto;
-    }
-
-    .text-align-center {
-      text-align: center;
-    }
-
-    .play-speed-rate-control {
-      display: flex;
-    }
-
-    .play-speed-rate-control>button {
-      flex: 1 1 auto;
-      margin: 0px 5px;
-      height: 100%;
-    }
-
-    .ab-repeat-wrapper {
-      display: flex;
-      flex-direction: column;
-      flex-wrap: wrap;
-    }
-
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 90px;
-      height: 34px;
-    }
-
-    .switch input {
-      display: none;
-    }
-
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #ca2222;
-      -webkit-transition: .4s;
-      transition: .4s;
-    }
-
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 26px;
-      width: 26px;
-      left: 4px;
-      bottom: 4px;
-      background-color: white;
-      -webkit-transition: .4s;
-      transition: .4s;
-    }
-
-    input:checked+.slider {
-      background-color: #2ab934;
-    }
-
-    input:focus+.slider {
-      box-shadow: 0 0 1px #2196F3;
-    }
-
-    input:checked+.slider:before {
-      -webkit-transform: translateX(55px);
-      -ms-transform: translateX(55px);
-      transform: translateX(55px);
-    }
-
-    .on {
-      display: none;
-    }
-
-    .on,
-    .off {
-      color: white;
-      position: absolute;
-      transform: translate(-50%, -50%);
-      top: 50%;
-      left: 50%;
-      font-size: 10px;
-      font-family: Verdana, sans-serif;
-    }
-
-    input:checked+.slider .on {
-      display: block;
-    }
-
-    input:checked+.slider .off {
-      display: none;
-    }
-
-    .slider.round {
-      border-radius: 34px;
-    }
-
-    .slider.round:before {
-      border-radius: 50%;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="index.css">
 </head>
 
 <body>
@@ -203,10 +26,14 @@
       </div>
       <div class="ab-repeat-wrapper">
         <div class="ab-repeat-from-wrapper">
-          <button>Play From</button><input type="number" class="text-align-center" min="0" max="43200" />
+          <button id="playFromBtn">From Sec</button>
+          <input id="abRepeatFrom" type="number" class="text-align-center" min="0" max="43200" value="0" />
+          / <label id="duration1"></label>
         </div>
         <div class="ab-repeat-to-wrapper">
-          <button>To</button><input type="number" class="text-align-center" min="0" max="43200" />
+          <button id="playToBtn">To Sec</button>
+          <input id="abRepeatTo" type="number" class="text-align-center" min="0" max="43200" value="0" />
+          / <label id="duration2"></label>
         </div>
       </div>
       <div class="loop-wrapper">
@@ -221,38 +48,67 @@
     </div>
   </div>
   <script>
-    var videoUrl = document.querySelector('#videoUrl').value;
+    const defaultVideoUrl = document.getElementById('videoUrl').value;
 
-    document.querySelector('#loadUrlBtn').addEventListener("click", function () {
-      videoUrl = document.querySelector('#videoUrl').value;
-      player.loadVideoById(urlToYoutubeVideoId(videoUrl));
-    });
+    bindingUIEventsToFunctions();
 
-    document.querySelector('#playSpeedRate').addEventListener("change", updatePlaySpeed);
+    function bindingUIEventsToFunctions() {
+      document.getElementById('playSpeedRate').addEventListener("change", updatePlaySpeed);
 
-    document.querySelector('#speedDown').addEventListener("click", function () {
-      document.querySelector('#playSpeedRate').stepDown();
-      document.querySelector('#playSpeedRate').dispatchEvent(new Event("change"));
-    });
-    document.querySelector('#speedUp').addEventListener("click", function () {
-      document.querySelector('#playSpeedRate').stepUp();
-      document.querySelector('#playSpeedRate').dispatchEvent(new Event("change"));
-    });
+      document.getElementById('speedDown').addEventListener("click", function () {
+        document.getElementById('playSpeedRate').stepDown();
+        document.getElementById('playSpeedRate').dispatchEvent(new Event("change"));
+      });
+      document.getElementById('speedUp').addEventListener("click", function () {
+        document.getElementById('playSpeedRate').stepUp();
+        document.getElementById('playSpeedRate').dispatchEvent(new Event("change"));
+      });
 
-    var tag = document.createElement('script');
+      document.getElementById('loadUrlBtn').addEventListener("click", function () {
+        if (player) {
+          player.loadVideoById(urlToYoutubeVideoId(document.getElementById('videoUrl').value));
+          document.getElementById('abRepeatFrom').value = 0;
+          document.getElementById('abRepeatTo').value = 0;
+        }
+      });
+
+      document.getElementById('playFromBtn').addEventListener("click", function () {
+        if (player) {
+          const currTime = player.getCurrentTime().toFixed(2);
+          document.getElementById('abRepeatFrom').value = currTime;
+          player.loadVideoById({
+            videoId: urlToYoutubeVideoId(document.getElementById('videoUrl').value),
+            startSeconds: currTime,
+            endSeconds: document.getElementById('abRepeatTo').value
+          })
+        }
+      });
+
+      document.getElementById('playToBtn').addEventListener("click", function () {
+        if (player) {
+          const currTime = player.getCurrentTime().toFixed(2);
+          document.getElementById('abRepeatTo').value = currTime;
+          player.loadVideoById({
+            videoId: urlToYoutubeVideoId(document.getElementById('videoUrl').value),
+            startSeconds: document.getElementById('abRepeatFrom').value,
+            endSeconds: currTime
+          })
+        }
+      });
+    }
+
+    let tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
 
-    var firstScriptTag = document.getElementsByTagName('script')[0];
+    let firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-    var player;
+    let player;
     function onYouTubeIframeAPIReady() {
       player = new YT.Player('player', {
-        videoId: urlToYoutubeVideoId(videoUrl),
+        videoId: urlToYoutubeVideoId(defaultVideoUrl),
         playerVars: {
-          playsinline: '1',
-          start: 0,
-          // end: 5,
+          playsinline: '1'
         },
         events: {
           'onReady': onPlayerReady,
@@ -262,24 +118,40 @@
     }
 
     function onPlayerReady(event) {
+      setInterval(updateDurationAndAbRepeatTo, 1000);
+      updatePlaySpeed();
+    }
 
+    function updateDurationAndAbRepeatTo() {
+      const duration = player.getDuration();
+      if (duration) {
+        document.getElementById('duration1').textContent = duration;
+        document.getElementById('duration2').textContent = duration;
+        const abRepeatFrom = parseFloat(document.getElementById('abRepeatFrom').value);
+        const abRepeatTo = parseFloat(document.getElementById('abRepeatTo').value);
+        if (abRepeatTo == 0 || abRepeatFrom >= abRepeatTo) {
+          document.getElementById('abRepeatTo').value = duration;
+        }
+      }
     }
 
     function onPlayerStateChange(event) {
-      if (event.data == YT.PlayerState.ENDED && document.querySelector('loopSwitch').checked) {
-        player.seekTo(0);
+      if (event.data == YT.PlayerState.ENDED && document.getElementById('loopSwitch').checked) {
+        player.seekTo(document.getElementById('abRepeatFrom').value);
         player.playVideo();
       }
     }
 
     function urlToYoutubeVideoId(url) {
-      var vid_regex = /(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+      let vid_regex = /(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
       return url === "" ? "" : url.match(vid_regex)[1];
     }
 
     function updatePlaySpeed() {
-      var speedRate = parseFloat(document.querySelector('#playSpeedRate').value);
-      player.setPlaybackRate(speedRate);
+      if (player) {
+        let speedRate = parseFloat(document.getElementById('playSpeedRate').value);
+        player.setPlaybackRate(speedRate);
+      }
     }
   </script>
 </body>
