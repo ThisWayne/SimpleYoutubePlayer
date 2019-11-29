@@ -90,8 +90,8 @@ input, button, label {
 .switch {
   position: relative;
   display: inline-block;
-  width: 90px;
-  height: 34px;
+  width: 150px;
+  height: 60px;
 }
 
 .switch input {
@@ -113,8 +113,8 @@ input, button, label {
 .slider:before {
   position: absolute;
   content: "";
-  height: 26px;
-  width: 26px;
+  height: 52px;
+  width: 52px;
   left: 4px;
   bottom: 4px;
   background-color: white;
@@ -131,9 +131,9 @@ input:focus+.slider {
 }
 
 input:checked+.slider:before {
-  -webkit-transform: translateX(55px);
-  -ms-transform: translateX(55px);
-  transform: translateX(55px);
+  -webkit-transform: translateX(90px);
+  -ms-transform: translateX(90px);
+  transform: translateX(90px);
 }
 
 .on {
