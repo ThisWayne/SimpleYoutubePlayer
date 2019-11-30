@@ -53,7 +53,13 @@
     bindingUIEventsToFunctions();
 
     function bindingUIEventsToFunctions() {
-      document.getElementById('playSpeedRate').addEventListener("change", updatePlaySpeed);
+      document.getElementById('loadUrlBtn').addEventListener("click", function () {
+        if (player) {
+          player.loadVideoById(urlToYoutubeVideoId(document.getElementById('videoUrl').value));
+          document.getElementById('abRepeatFrom').value = 0;
+          document.getElementById('abRepeatTo').value = 0;
+        }
+      });
 
       document.getElementById('speedDown').addEventListener("click", function () {
         document.getElementById('playSpeedRate').stepDown();
@@ -64,37 +70,28 @@
         document.getElementById('playSpeedRate').dispatchEvent(new Event("change"));
       });
 
-      document.getElementById('loadUrlBtn').addEventListener("click", function () {
-        if (player) {
-          player.loadVideoById(urlToYoutubeVideoId(document.getElementById('videoUrl').value));
-          document.getElementById('abRepeatFrom').value = 0;
-          document.getElementById('abRepeatTo').value = 0;
-        }
-      });
+      document.getElementById('playSpeedRate').addEventListener("change", updatePlaySpeed);
+      document.getElementById('playSpeedRate').addEventListener("input", updatePlaySpeed);
 
       document.getElementById('playFromBtn').addEventListener("click", function () {
         if (player) {
-          const currTime = player.getCurrentTime().toFixed(2);
-          document.getElementById('abRepeatFrom').value = currTime;
-          player.loadVideoById({
-            videoId: urlToYoutubeVideoId(document.getElementById('videoUrl').value),
-            startSeconds: currTime,
-            endSeconds: document.getElementById('abRepeatTo').value
-          })
+          document.getElementById('abRepeatFrom').value = player.getCurrentTime().toFixed(2);
+          setPlayerABRepeat();
         }
       });
 
+      document.getElementById('abRepeatFrom').addEventListener("change", setPlayerABRepeat);
+      document.getElementById('abRepeatFrom').addEventListener("input", setPlayerABRepeat);
+
       document.getElementById('playToBtn').addEventListener("click", function () {
         if (player) {
-          const currTime = player.getCurrentTime().toFixed(2);
-          document.getElementById('abRepeatTo').value = currTime;
-          player.loadVideoById({
-            videoId: urlToYoutubeVideoId(document.getElementById('videoUrl').value),
-            startSeconds: document.getElementById('abRepeatFrom').value,
-            endSeconds: currTime
-          })
+          document.getElementById('abRepeatTo').value = player.getCurrentTime().toFixed(2);
+          setPlayerABRepeat();
         }
       });
+
+      document.getElementById('abRepeatTo').addEventListener("change", setPlayerABRepeat);
+      document.getElementById('abRepeatTo').addEventListener("input", setPlayerABRepeat);
     }
 
     let tag = document.createElement('script');
@@ -154,6 +151,16 @@
       if (player) {
         let speedRate = parseFloat(document.getElementById('playSpeedRate').value);
         player.setPlaybackRate(speedRate);
+      }
+    }
+
+    function setPlayerABRepeat() {
+      if (player) {
+        player.loadVideoById({
+          videoId: urlToYoutubeVideoId(document.getElementById('videoUrl').value),
+          startSeconds: document.getElementById('abRepeatFrom').value,
+          endSeconds: document.getElementById('abRepeatTo').value
+        })
       }
     }
   </script>
