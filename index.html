@@ -123,13 +123,16 @@
     }
 
     function updateDurationAndAbRepeatTo() {
-      const duration = player.getDuration();
+      let duration = player.getDuration();
       if (duration) {
+        duration = duration.toFixed(2);
         document.getElementById('duration1').textContent = duration;
         document.getElementById('duration2').textContent = duration;
+        document.getElementById('abRepeatFrom').max = duration;
+        document.getElementById('abRepeatTo').max = duration;
         const abRepeatFrom = parseFloat(document.getElementById('abRepeatFrom').value);
         const abRepeatTo = parseFloat(document.getElementById('abRepeatTo').value);
-        if (abRepeatTo == 0 || abRepeatFrom >= abRepeatTo) {
+        if (abRepeatTo == 0 || abRepeatFrom >= abRepeatTo || abRepeatTo > duration) {
           document.getElementById('abRepeatTo').value = duration;
         }
       }
