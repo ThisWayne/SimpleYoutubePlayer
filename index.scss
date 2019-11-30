@@ -1,0 +1,170 @@
+* {
+  box-sizing: border-box;
+  // border: solid 1px red;
+}
+
+body, html {
+  height: 100%;
+  margin: 0;
+}
+
+input, button {
+  min-width: 60px;
+  min-height: 60px;
+}
+
+input, button, label {
+  font-size: 1.2rem;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 5px;
+}
+
+.video-wrapper {
+  flex: 0 0 auto;
+  position: relative;
+  /* 16:9 */
+  padding-bottom: 56.25%;
+  margin-bottom: 5px;
+  height: 0;
+  >iframe{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.video-control-wrapper {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  >div{
+    margin: 0.5rem 0px;
+  }
+}
+
+.url-load-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  >input{
+    flex: 2 2 auto;
+  }
+  >button{
+    flex: 1 1 auto;
+  }
+}
+
+.play-speed-rate-control-wrapper{
+  display: flex;
+  flex-wrap: wrap;
+  .play-speed-rate-control{
+    flex: 2 2 auto;
+    display: flex;
+    >button{
+      flex: 1 1 auto;
+      margin: 0px 5px;
+      height: 100%;
+    }
+  }
+  .play-speed-rate{
+    flex: 1 1 auto;
+  }
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.ab-repeat-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  >div{
+    margin: 0px 5px;
+  }
+}
+
+.loop-wrapper{
+  display: flex;
+  >label{
+    line-height: 300%;
+    margin: 0px 5px;
+  }
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 158px;
+  height: 60px;
+  input {
+    display: none;
+  }
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ca2222;
+  transition: .4s;
+  &.round{
+    border-radius: 34px;
+    &:before{
+      border-radius: 50%;
+    }
+  }
+  &:before{
+    position: absolute;
+    content: "";
+    height: 52px;
+    width: 52px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+  }
+}
+
+input:checked+.slider {
+  background-color: #2ab934;
+}
+
+input:focus+.slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked+.slider:before {
+  transform: translateX(98px);
+}
+
+.on {
+  display: none;
+}
+
+.on, .off {
+  color: white;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+}
+
+input:checked+.slider .on {
+  display: block;
+}
+
+input:checked+.slider .off {
+  display: none;
+}
