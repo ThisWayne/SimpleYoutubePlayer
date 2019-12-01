@@ -236,6 +236,10 @@ label {
   margin: 4px;
 }
 
+.ab-repeat-wrapper > div > input {
+  margin-right: 4px;
+}
+
 .loop-wrapper {
   display: -webkit-box;
   display: -ms-flexbox;
