@@ -3,17 +3,21 @@
           box-sizing: border-box;
 }
 
-body, html {
+body,
+html {
   height: 100%;
   margin: 0;
 }
 
-input, button {
+input,
+button {
   min-width: 60px;
   min-height: 60px;
 }
 
-input, button, label {
+input,
+button,
+label {
   font-size: 1.2rem;
 }
 
@@ -64,7 +68,7 @@ input, button, label {
 }
 
 .video-control-wrapper > div {
-  margin: 0.5rem 0px;
+  margin: 0.3rem 0px;
 }
 
 .url-load-wrapper {
@@ -77,16 +81,28 @@ input, button, label {
       justify-content: space-around;
 }
 
-.url-load-wrapper > input {
+.url-load-wrapper > div {
+  margin: 4px;
+}
+
+.url-load-wrapper .video-url-wrapper {
   -webkit-box-flex: 2;
       -ms-flex: 2 2 auto;
           flex: 2 2 auto;
 }
 
-.url-load-wrapper > button {
+.url-load-wrapper .video-url-wrapper > input {
+  width: 100%;
+}
+
+.url-load-wrapper .load-url-btn-wrapper {
   -webkit-box-flex: 1;
       -ms-flex: 1 1 auto;
           flex: 1 1 auto;
+}
+
+.url-load-wrapper .load-url-btn-wrapper > button {
+  width: 100%;
 }
 
 .play-speed-rate-control-wrapper {
@@ -104,20 +120,27 @@ input, button, label {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 
 .play-speed-rate-control-wrapper .play-speed-rate-control > button {
   -webkit-box-flex: 1;
       -ms-flex: 1 1 auto;
           flex: 1 1 auto;
-  margin: 0px 5px;
-  height: 100%;
+  margin: 4px;
 }
 
-.play-speed-rate-control-wrapper .play-speed-rate {
+.play-speed-rate-control-wrapper .play-speed-rate-wrapper {
   -webkit-box-flex: 1;
       -ms-flex: 1 1 auto;
           flex: 1 1 auto;
+  margin: 4px;
+}
+
+.play-speed-rate-control-wrapper .play-speed-rate-wrapper > input {
+  width: 100%;
 }
 
 .text-align-center {
@@ -133,7 +156,7 @@ input, button, label {
 }
 
 .ab-repeat-wrapper > div {
-  margin: 0px 5px;
+  margin: 4px;
 }
 
 .loop-wrapper {
@@ -144,7 +167,7 @@ input, button, label {
 
 .loop-wrapper > label {
   line-height: 300%;
-  margin: 0px 5px;
+  margin: 0px 4px;
 }
 
 .switch {
@@ -208,7 +231,8 @@ input:checked + .slider:before {
   display: none;
 }
 
-.on, .off {
+.on,
+.off {
   color: white;
   position: absolute;
   -webkit-transform: translate(-50%, -50%);
