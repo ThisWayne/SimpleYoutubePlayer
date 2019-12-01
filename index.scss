@@ -9,6 +9,62 @@ html {
   margin: 0;
 }
 
+button {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  text-transform: none;
+  overflow: visible;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  user-select: none;
+  color: #fff;
+  background-color: #337ab7;
+  border-color: #2e6da4;
+
+  &:hover {
+    color: #fff;
+    background-color: #286090;
+    border-color: #204d74;
+    text-decoration: none;
+  }
+
+  &:active {
+    color: #fff;
+    background-color: #286090;
+    background-image: none;
+    border-color: #204d74;
+    background-image: none;
+    outline: 0;
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125)
+  }
+}
+
+input {
+  padding: 6px 12px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+
+  &:focus {
+    border-color: #66afe9;
+    outline: 0;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+  }
+}
+
 input,
 button {
   min-width: 60px;
@@ -19,6 +75,10 @@ input,
 button,
 label {
   font-size: 1.2rem;
+}
+
+.text-align-center {
+  text-align: center;
 }
 
 .container {
@@ -108,16 +168,18 @@ label {
   }
 }
 
-.text-align-center {
-  text-align: center;
-}
-
 .ab-repeat-wrapper {
   display: flex;
   flex-wrap: wrap;
 
   >div {
-    margin: 4px;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+
+    >button {
+      margin: 4px;
+    }
   }
 }
 
