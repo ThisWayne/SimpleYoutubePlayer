@@ -10,7 +10,7 @@ body {
 }
 
 header {
-  margin: 0.1rem 0px;
+  margin: 5px 0px;
   display: flex;
   align-items: center;
   flex-wrap: nowrap;
@@ -110,9 +110,9 @@ label {
 .container {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 95%;
   height: 100%;
-  padding: 5px;
+  margin: 0 auto;
 }
 
 .video-wrapper {
@@ -139,7 +139,7 @@ label {
   width: 100%;
 
   >div {
-    margin: 0.3rem 0px;
+    margin: 5px 0px;
   }
 }
 
