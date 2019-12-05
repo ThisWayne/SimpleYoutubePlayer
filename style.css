@@ -133,6 +133,7 @@ label {
       -ms-flex-direction: column;
           flex-direction: column;
   width: 95%;
+  max-width: 992px;
   height: 100%;
   margin: 0 auto;
 }
