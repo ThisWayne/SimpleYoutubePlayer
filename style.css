@@ -15,11 +15,20 @@ header {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -webkit-box-align: baseline;
+      -ms-flex-align: baseline;
+          align-items: baseline;
   -ms-flex-wrap: nowrap;
       flex-wrap: nowrap;
+}
+
+header h1,
+header p {
+  margin: 0px;
+}
+
+header p {
+  margin: 0px 5px;
 }
 
 .title-main {
@@ -197,6 +206,7 @@ label {
 
 .url-load-wrapper .video-url-wrapper > input {
   width: 100%;
+  font-size: 1rem;
 }
 
 .url-load-wrapper .load-url-btn-wrapper {
