@@ -100,7 +100,7 @@
 
       document.getElementById('playFromBtn').addEventListener("click", function () {
         if (player) {
-          document.getElementById('abRepeatFrom').value = player.getCurrentTime().toFixed(2);
+          document.getElementById('abRepeatFrom').value = player.getCurrentTime().toFixed(1);
           setPlayerABRepeat();
         }
       });
@@ -110,7 +110,7 @@
 
       document.getElementById('playToBtn').addEventListener("click", function () {
         if (player) {
-          document.getElementById('abRepeatTo').value = player.getCurrentTime().toFixed(2);
+          document.getElementById('abRepeatTo').value = player.getCurrentTime().toFixed(1);
           setPlayerABRepeat();
         }
       });
@@ -147,7 +147,7 @@
     function updateDurationAndAbRepeatTo() {
       let duration = player.getDuration();
       if (duration) {
-        duration = duration.toFixed(2);
+        duration = duration.toFixed(1);
         document.getElementById('duration1').textContent = duration;
         document.getElementById('duration2').textContent = duration;
         document.getElementById('abRepeatFrom').max = duration;
