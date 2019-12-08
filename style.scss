@@ -204,16 +204,22 @@ label {
   flex-wrap: wrap;
 
   >div {
+    flex: 1 1 auto;
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
 
     >button {
+      flex: 1 1 auto;
       margin: 4px;
     }
 
-    >input {
-      margin-right: 4px;
+    >div {
+      flex: 0 0 auto;
+
+      >input {
+        margin-right: 4px;
+      }
     }
   }
 }

@@ -260,6 +260,9 @@ label {
 }
 
 .ab-repeat-wrapper > div {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -271,10 +274,19 @@ label {
 }
 
 .ab-repeat-wrapper > div > button {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto;
   margin: 4px;
 }
 
-.ab-repeat-wrapper > div > input {
+.ab-repeat-wrapper > div > div {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 auto;
+          flex: 0 0 auto;
+}
+
+.ab-repeat-wrapper > div > div > input {
   margin-right: 4px;
 }
 
