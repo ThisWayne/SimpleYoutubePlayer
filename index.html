@@ -23,54 +23,57 @@
         <span class="title-sub">YouTube Player</span>
       </p>
     </header>
-    <div class="video-wrapper">
-      <div id="player"></div>
-    </div>
-    <div class="video-control-wrapper">
-      <div class="url-load-wrapper">
-        <div class="video-url-wrapper">
-          <input id="videoUrl" type="url" value="https://www.youtube.com/watch?v=BYJzwK4sxRg" />
+    <main>
+      <section class="video-wrapper">
+        <div id="player"></div>
+      </section>
+      <section class="video-control-wrapper">
+        <div class="url-load-wrapper">
+          <div class="video-url-wrapper">
+            <input id="videoUrl" type="url" value="https://www.youtube.com/watch?v=BYJzwK4sxRg" />
+          </div>
+          <div class="load-url-btn-wrapper">
+            <button id="loadUrlBtn">Load</button>
+          </div>
         </div>
-        <div class="load-url-btn-wrapper">
-          <button id="loadUrlBtn">Load</button>
-        </div>
-      </div>
-      <div class="play-speed-rate-control-wrapper">
-        <div class="play-speed-rate-control">
-          <button id="speedDown">Speed -</button>
-          <button id="speedUp">Speed +</button>
-        </div>
-        <div class="play-speed-rate-wrapper">
-          <input id="playSpeedRate" class="text-align-center" type="number" value="1" min="0.25" max="2" step="0.05" />
-        </div>
+        <div class="play-speed-rate-control-wrapper">
+          <div class="play-speed-rate-control">
+            <button id="speedDown">Speed -</button>
+            <button id="speedUp">Speed +</button>
+          </div>
+          <div class="play-speed-rate-wrapper">
+            <input id="playSpeedRate" class="text-align-center" type="number" value="1" min="0.25" max="2"
+              step="0.05" />
+          </div>
 
-      </div>
-      <div class="ab-repeat-wrapper">
-        <div>
-          <button id="playFromBtn">From Sec</button>
+        </div>
+        <div class="ab-repeat-wrapper">
           <div>
-            <input id="abRepeatFrom" type="number" class="text-align-center" min="0" max="43200" value="0" />
-            / <label id="duration1"></label>
+            <button id="playFromBtn">From Sec</button>
+            <div>
+              <input id="abRepeatFrom" type="number" class="text-align-center" min="0" max="43200" value="0" />
+              / <label id="duration1"></label>
+            </div>
+          </div>
+          <div>
+            <button id="playToBtn">To Sec</button>
+            <div>
+              <input id="abRepeatTo" type="number" class="text-align-center" min="0" max="43200" value="0" />
+              / <label id="duration2"></label>
+            </div>
           </div>
         </div>
-        <div>
-          <button id="playToBtn">To Sec</button>
-          <div>
-            <input id="abRepeatTo" type="number" class="text-align-center" min="0" max="43200" value="0" />
-            / <label id="duration2"></label>
-          </div>
+        <div class="loop-wrapper">
+          <label>Loop: </label>
+          <label class="switch">
+            <input id="loopSwitch" type="checkbox" checked />
+            <div class="slider round">
+              <span class="on">ON</span><span class="off">OFF</span>
+            </div>
+          </label>
         </div>
-      </div>
-      <div class="loop-wrapper">
-        <label>Loop: </label>
-        <label class="switch">
-          <input id="loopSwitch" type="checkbox" checked />
-          <div class="slider round">
-            <span class="on">ON</span><span class="off">OFF</span>
-          </div>
-        </label>
-      </div>
-    </div>
+      </section>
+    </main>
   </div>
   <script>
     const defaultVideoUrl = document.getElementById('videoUrl').value;
