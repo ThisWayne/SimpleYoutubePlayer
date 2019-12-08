@@ -130,7 +130,6 @@ label {
   position: relative;
   /* 16:9 */
   padding-bottom: 56.25%;
-  margin-bottom: 5px;
   height: 0;
 
   >iframe {
@@ -147,10 +146,6 @@ label {
   display: flex;
   flex-direction: column;
   width: 100%;
-
-  >div {
-    margin: 5px 0px;
-  }
 }
 
 .url-load-wrapper {
