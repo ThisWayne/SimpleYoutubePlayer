@@ -11,7 +11,7 @@ body {
 }
 
 header {
-  margin: 5px 0px;
+  margin: 0px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -22,13 +22,12 @@ header {
       flex-wrap: nowrap;
 }
 
-header h1,
-header p {
-  margin: 0px;
+header h1 {
+  margin: 0px 5px;
 }
 
 header p {
-  margin: 0px 5px;
+  margin: 0px;
 }
 
 .title-main {
@@ -48,7 +47,6 @@ header p {
 .title-icon {
   height: 5vmin;
   width: 5vmin;
-  margin: 0px 5px;
 }
 
 button {
@@ -144,7 +142,7 @@ label {
   width: 95%;
   max-width: 992px;
   height: 100%;
-  margin: 0 auto;
+  margin: 5px auto;
 }
 
 .video-wrapper {
@@ -155,6 +153,7 @@ label {
   /* 16:9 */
   padding-bottom: 56.25%;
   height: 0;
+  margin: 5px 0px;
 }
 
 .video-wrapper > iframe {
