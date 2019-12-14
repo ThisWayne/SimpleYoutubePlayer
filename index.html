@@ -159,6 +159,9 @@
         document.getElementById('abRepeatTo').max = duration;
         const abRepeatFrom = parseFloat(document.getElementById('abRepeatFrom').value);
         const abRepeatTo = parseFloat(document.getElementById('abRepeatTo').value);
+        if (abRepeatFrom >= duration) {
+          document.getElementById('abRepeatFrom').value = 0;
+        }
         if (abRepeatTo == 0 || abRepeatFrom >= abRepeatTo || abRepeatTo > duration) {
           document.getElementById('abRepeatTo').value = duration;
         }
