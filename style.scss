@@ -217,7 +217,8 @@ label {
     >div {
       flex: 0 0 auto;
 
-      >input {
+      input,
+      label {
         margin-right: 4px;
       }
     }

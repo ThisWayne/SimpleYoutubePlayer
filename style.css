@@ -286,7 +286,8 @@ label {
           flex: 0 0 auto;
 }
 
-.ab-repeat-wrapper > div > div > input {
+.ab-repeat-wrapper > div > div input,
+.ab-repeat-wrapper > div > div label {
   margin-right: 4px;
 }
 
