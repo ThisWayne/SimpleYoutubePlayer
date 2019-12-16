@@ -79,7 +79,8 @@
   </div>
   <script>
     const defaultVideoUrl = document.getElementById('videoUrl').value;
-
+    const maxSpeed = 2;
+    const minSpeed = 0.25;
     bindingUIEventsToFunctions();
 
     function bindingUIEventsToFunctions() {
@@ -106,7 +107,6 @@
       document.getElementById('playFromBtn').addEventListener("click", function () {
         if (player) {
           document.getElementById('abRepeatFrom').value = player.getCurrentTime().toFixed(1);
-          setPlayerABRepeat();
         }
       });
 
@@ -181,8 +181,16 @@
     }
 
     function updatePlaySpeed() {
+      let speedRate = parseFloat(document.getElementById('playSpeedRate').value);
+      if (speedRate > maxSpeed) {
+        speedRate = maxSpeed
+        document.getElementById('playSpeedRate').value = maxSpeed;
+      }
+      else if (speedRate < minSpeed) {
+        speedRate = minSpeed;
+        document.getElementById('playSpeedRate').value = minSpeed;
+      }
       if (player) {
-        let speedRate = parseFloat(document.getElementById('playSpeedRate').value);
         player.setPlaybackRate(speedRate);
       }
     }
