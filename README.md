@@ -1,4 +1,4 @@
-# TimeGemYoutubePlayer
+# Time Gem Youtube Player
 
 A mobile-friendly web app for playing YouTube video.
 
