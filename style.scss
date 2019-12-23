@@ -131,7 +131,7 @@ label {
   height: 0;
   margin: 5px 0px;
 
-  >iframe {
+  iframe {
     position: absolute;
     top: 0;
     left: 0;
@@ -152,14 +152,14 @@ label {
   flex-wrap: wrap;
   justify-content: space-around;
 
-  >div {
+  div {
     margin: 4px;
   }
 
   .video-url-wrapper {
     flex: 2 2 auto;
 
-    >input {
+    input {
       width: 100%;
       font-size: 1rem;
     }
@@ -168,7 +168,7 @@ label {
   .load-url-btn-wrapper {
     flex: 1 1 auto;
 
-    >button {
+    button {
       width: 100%;
     }
   }
@@ -183,7 +183,7 @@ label {
     display: flex;
     justify-content: space-between;
 
-    >button {
+    button {
       flex: 1 1 auto;
       margin: 4px;
     }
@@ -193,7 +193,7 @@ label {
     flex: 1 1 auto;
     margin: 4px;
 
-    >input {
+    input {
       width: 100%;
     }
   }
@@ -209,7 +209,7 @@ label {
     flex-wrap: nowrap;
     align-items: center;
 
-    >button {
+    button {
       flex: 1 1 auto;
       margin: 4px;
     }
@@ -228,7 +228,7 @@ label {
 .loop-wrapper {
   display: flex;
 
-  >label {
+  label {
     line-height: 300%;
     margin: 0px 4px;
   }

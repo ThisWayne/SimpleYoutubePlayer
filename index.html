@@ -87,56 +87,56 @@
     </main>
   </div>
   <script>
-    const defaultVideoUrl = document.getElementById('videoUrl').value;
+    const defaultVideoUrl = getDomById('videoUrl').value;
     const maxSpeed = 2;
     const minSpeed = 0.25;
     bindingUIEventsToFunctions();
 
     function bindingUIEventsToFunctions() {
-      document.getElementById('loadUrlBtn').addEventListener("click", function () {
+      getDomById('loadUrlBtn').addEventListener("click", function () {
         if (player) {
-          player.loadVideoById(urlToYoutubeVideoId(document.getElementById('videoUrl').value));
-          document.getElementById('abRepeatFrom').value = 0;
-          document.getElementById('abRepeatTo').value = 0;
+          player.loadVideoById(urlToYoutubeVideoId(getDomById('videoUrl').value));
+          getDomById('abRepeatFrom').value = 0;
+          getDomById('abRepeatTo').value = 0;
         }
       });
 
-      document.getElementById('speedDown').addEventListener("click", function () {
-        document.getElementById('playSpeedRate').stepDown();
-        document.getElementById('playSpeedRate').dispatchEvent(new Event("change"));
+      getDomById('speedDown').addEventListener("click", function () {
+        getDomById('playSpeedRate').stepDown();
+        getDomById('playSpeedRate').dispatchEvent(new Event("change"));
       });
-      document.getElementById('speedUp').addEventListener("click", function () {
-        document.getElementById('playSpeedRate').stepUp();
-        document.getElementById('playSpeedRate').dispatchEvent(new Event("change"));
+      getDomById('speedUp').addEventListener("click", function () {
+        getDomById('playSpeedRate').stepUp();
+        getDomById('playSpeedRate').dispatchEvent(new Event("change"));
       });
 
-      document.getElementById('playSpeedRate').addEventListener("change", updatePlaySpeed);
-      document.getElementById('playSpeedRate').addEventListener("input", updatePlaySpeed);
+      getDomById('playSpeedRate').addEventListener("change", updatePlaySpeed);
+      getDomById('playSpeedRate').addEventListener("input", updatePlaySpeed);
 
-      document.getElementById('playFromBtn').addEventListener("click", function () {
+      getDomById('playFromBtn').addEventListener("click", function () {
         if (player) {
-          document.getElementById('abRepeatFrom').value = player.getCurrentTime().toFixed(1);
+          getDomById('abRepeatFrom').value = player.getCurrentTime().toFixed(1);
         }
       });
 
-      document.getElementById('abRepeatFrom').addEventListener("change", setPlayerABRepeat);
-      document.getElementById('abRepeatFrom').addEventListener("input", setPlayerABRepeat);
+      getDomById('abRepeatFrom').addEventListener("change", setPlayerABRepeat);
+      getDomById('abRepeatFrom').addEventListener("input", setPlayerABRepeat);
 
-      document.getElementById('playToBtn').addEventListener("click", function () {
+      getDomById('playToBtn').addEventListener("click", function () {
         if (player) {
-          document.getElementById('abRepeatTo').value = player.getCurrentTime().toFixed(1);
+          getDomById('abRepeatTo').value = player.getCurrentTime().toFixed(1);
           setPlayerABRepeat();
         }
       });
 
-      document.getElementById('abRepeatTo').addEventListener("change", setPlayerABRepeat);
-      document.getElementById('abRepeatTo').addEventListener("input", setPlayerABRepeat);
+      getDomById('abRepeatTo').addEventListener("change", setPlayerABRepeat);
+      getDomById('abRepeatTo').addEventListener("input", setPlayerABRepeat);
     }
 
-    let tag = document.createElement('script');
+    const tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
 
-    let firstScriptTag = document.getElementsByTagName('script')[0];
+    const firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
     let player;
@@ -162,42 +162,38 @@
       let duration = player.getDuration();
       if (duration) {
         duration = duration.toFixed(1);
-        document.getElementById('duration1').textContent = duration;
-        document.getElementById('duration2').textContent = duration;
-        document.getElementById('abRepeatFrom').max = duration;
-        document.getElementById('abRepeatTo').max = duration;
-        const abRepeatFrom = parseFloat(document.getElementById('abRepeatFrom').value);
-        const abRepeatTo = parseFloat(document.getElementById('abRepeatTo').value);
+        getDomById('duration1').textContent = duration;
+        getDomById('duration2').textContent = duration;
+        getDomById('abRepeatFrom').max = duration;
+        getDomById('abRepeatTo').max = duration;
+
+        const abRepeatFrom = parseFloat(getDomById('abRepeatFrom').value);
+        const abRepeatTo = parseFloat(getDomById('abRepeatTo').value);
         if (abRepeatFrom >= duration) {
-          document.getElementById('abRepeatFrom').value = 0;
+          getDomById('abRepeatFrom').value = 0;
         }
         if (abRepeatTo == 0 || abRepeatFrom >= abRepeatTo || abRepeatTo > duration) {
-          document.getElementById('abRepeatTo').value = duration;
+          getDomById('abRepeatTo').value = duration;
         }
       }
     }
 
     function onPlayerStateChange(event) {
-      if (event.data == YT.PlayerState.ENDED && document.getElementById('loopSwitch').checked) {
-        player.seekTo(document.getElementById('abRepeatFrom').value);
+      if (event.data == YT.PlayerState.ENDED && getDomById('loopSwitch').checked) {
+        player.seekTo(getDomById('abRepeatFrom').value);
         player.playVideo();
       }
     }
 
-    function urlToYoutubeVideoId(url) {
-      let vid_regex = /(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
-      return url === "" ? "" : url.match(vid_regex)[1];
-    }
-
     function updatePlaySpeed() {
-      let speedRate = parseFloat(document.getElementById('playSpeedRate').value);
+      let speedRate = parseFloat(getDomById('playSpeedRate').value);
       if (speedRate > maxSpeed) {
         speedRate = maxSpeed
-        document.getElementById('playSpeedRate').value = maxSpeed;
+        getDomById('playSpeedRate').value = maxSpeed;
       }
       else if (speedRate < minSpeed) {
         speedRate = minSpeed;
-        document.getElementById('playSpeedRate').value = minSpeed;
+        getDomById('playSpeedRate').value = minSpeed;
       }
       if (player) {
         player.setPlaybackRate(speedRate);
@@ -207,12 +203,19 @@
     function setPlayerABRepeat() {
       if (player) {
         player.loadVideoById({
-          videoId: urlToYoutubeVideoId(document.getElementById('videoUrl').value),
-          startSeconds: document.getElementById('abRepeatFrom').value,
-          endSeconds: document.getElementById('abRepeatTo').value
+          videoId: urlToYoutubeVideoId(getDomById('videoUrl').value),
+          startSeconds: getDomById('abRepeatFrom').value,
+          endSeconds: getDomById('abRepeatTo').value
         })
       }
     }
+
+    function urlToYoutubeVideoId(url) {
+      const vid_regex = /(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+      return url === "" ? "" : url.match(vid_regex)[1];
+    }
+
+    function getDomById(id) { return document.getElementById(id); }
   </script>
 </body>
 
