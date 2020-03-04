@@ -13,18 +13,19 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description"
-    content="a web app that allows you to play the youtube video in a customised speed, play from time a to time b and loop the video">
+  <meta name="description" content="a web app that allows you to play the youtube video in a customised speed, play from time a to time b and loop the video">
   <meta name="keywords" content="youtube iframe api, speed, a-b repeat, repeat, loop">
   <meta name="author" content="This Wayne">
   <link rel="icon" type="image/png" href="TimeGem.png" sizes="16x16">
   <link rel="icon" type="image/png" href="TimeGem.png" sizes="32x32">
   <link rel="stylesheet" type="text/css" href="style.css">
   <title>Time Gem</title>
+  <!-- production version, optimized for size and speed -->
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 </head>
 
 <body>
-  <div class="container">
+  <div id="app" class="container">
     <header>
       <h1>
         <img src="TimeGem.png" class="title-icon" alt="title icon" />
@@ -41,43 +42,42 @@
       <section class="video-control-wrapper">
         <div class="url-load-wrapper">
           <div class="video-url-wrapper">
-            <input id="videoUrl" type="url" value="https://www.youtube.com/watch?v=nHlJODYBLKs" />
+            <input type="url" v-model="videoUrl" />
           </div>
           <div class="load-url-btn-wrapper">
-            <button id="loadUrlBtn">Load</button>
+            <button v-on:click="loadUrlClick">Load</button>
           </div>
         </div>
         <div class="play-speed-rate-control-wrapper">
           <div class="play-speed-rate-control">
-            <button id="speedDown">Speed -</button>
-            <button id="speedUp">Speed +</button>
+            <button v-on:click="speedDownClick">Speed -</button>
+            <button v-on:click="speedUpClick">Speed +</button>
           </div>
           <div class="play-speed-rate-wrapper">
-            <input id="playSpeedRate" class="text-align-center" type="number" value="1" min="0.25" max="2"
-              step="0.05" />
+            <input class="text-align-center" type="number" v-bind:min="minSpeed" v-bind:max="maxSpeed" step="0.05" v-model="playSpeedRate" />
           </div>
 
         </div>
         <div class="ab-repeat-wrapper">
           <div>
-            <button id="playFromBtn">From Now</button>
+            <button v-on:click="playFromClick">From Now</button>
             <div>
-              <input id="abRepeatFrom" type="number" class="text-align-center" min="0" max="43200" value="0" />
-              / <label id="duration1"></label>
+              <input type="number" class="text-align-center" min="0" v-bind:max="duration" v-model="abRepeatFrom" v-on:input="setPlayerABRepeat" v-on:change="setPlayerABRepeat" />
+              / <label>{{duration}}</label>
             </div>
           </div>
           <div>
-            <button id="playToBtn">To Now</button>
+            <button v-on:click="playToClick">To Now</button>
             <div>
-              <input id="abRepeatTo" type="number" class="text-align-center" min="0" max="43200" value="0" />
-              / <label id="duration2"></label>
+              <input type="number" class="text-align-center" min="0" v-bind:max="duration" v-model="abRepeatTo" v-on:input="setPlayerABRepeat" v-on:change="setPlayerABRepeat" />
+              / <label>{{duration}}</label>
             </div>
           </div>
         </div>
         <div class="loop-wrapper">
           <label>Loop: </label>
           <label class="switch">
-            <input id="loopSwitch" type="checkbox" checked />
+            <input type="checkbox" v-model="isLoopOn" />
             <div class="slider round">
               <span class="on">ON</span><span class="off">OFF</span>
             </div>
@@ -87,135 +87,117 @@
     </main>
   </div>
   <script>
-    const defaultVideoUrl = getDomById('videoUrl').value;
-    const maxSpeed = 2;
-    const minSpeed = 0.25;
-    bindingUIEventsToFunctions();
-
-    function bindingUIEventsToFunctions() {
-      getDomById('loadUrlBtn').addEventListener("click", function () {
-        if (player) {
-          player.loadVideoById(urlToYoutubeVideoId(getDomById('videoUrl').value));
-          getDomById('abRepeatFrom').value = 0;
-          getDomById('abRepeatTo').value = 0;
-        }
-      });
-
-      getDomById('speedDown').addEventListener("click", function () {
-        getDomById('playSpeedRate').stepDown();
-        getDomById('playSpeedRate').dispatchEvent(new Event("change"));
-      });
-      getDomById('speedUp').addEventListener("click", function () {
-        getDomById('playSpeedRate').stepUp();
-        getDomById('playSpeedRate').dispatchEvent(new Event("change"));
-      });
-
-      getDomById('playSpeedRate').addEventListener("change", updatePlaySpeed);
-      getDomById('playSpeedRate').addEventListener("input", updatePlaySpeed);
-
-      getDomById('playFromBtn').addEventListener("click", function () {
-        if (player) {
-          getDomById('abRepeatFrom').value = player.getCurrentTime().toFixed(1);
-        }
-      });
-
-      getDomById('abRepeatFrom').addEventListener("change", setPlayerABRepeat);
-      getDomById('abRepeatFrom').addEventListener("input", setPlayerABRepeat);
-
-      getDomById('playToBtn').addEventListener("click", function () {
-        if (player) {
-          getDomById('abRepeatTo').value = player.getCurrentTime().toFixed(1);
-          setPlayerABRepeat();
-        }
-      });
-
-      getDomById('abRepeatTo').addEventListener("change", setPlayerABRepeat);
-      getDomById('abRepeatTo').addEventListener("input", setPlayerABRepeat);
-    }
-
-    const tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-
-    const firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-    let player;
-    function onYouTubeIframeAPIReady() {
-      player = new YT.Player('player', {
-        videoId: urlToYoutubeVideoId(defaultVideoUrl),
-        playerVars: {
-          playsinline: '1'
+    const app = new Vue(
+      {
+        el: '#app',
+        data() {
+          return {
+            player: {},
+            videoUrl: 'https://www.youtube.com/watch?v=nHlJODYBLKs',
+            minSpeed: 0.25,
+            maxSpeed: 2,
+            playSpeedRate: 1,
+            abRepeatFrom: 0,
+            abRepeatTo: 0,
+            duration: 0,
+            isLoopOn: true,
+          }
         },
-        events: {
-          'onReady': onPlayerReady,
-          'onStateChange': onPlayerStateChange
-        }
-      });
-    }
+        methods: {
+          onYouTubeIframeAPIReady(event) {
+            this.$data.player = new YT.Player('player', {
+              videoId: this.urlToYoutubeVideoId(this.$data.videoUrl),
+              playerVars: {
+                playsinline: '1'
+              },
+              events: {
+                'onReady': this.onPlayerReady,
+                'onStateChange': this.onPlayerStateChange
+              }
+            });
+          },
+          onPlayerReady(event) {
+            setInterval(this.updateDurationAndAbRepeatTo, 1000);
+          },
+          onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.ENDED && this.$data.isLoopOn) {
+              this.$data.player.seekTo(this.$data.abRepeatFrom);
+              this.$data.player.playVideo();
+            }
+          },
+          loadUrlClick(event) {
+            if (this.$data.player) {
+              this.$data.player.loadVideoById(this.urlToYoutubeVideoId(this.$data.videoUrl));
+            }
+          },
+          speedUpClick(event) {
+            this.$data.playSpeedRate = (parseFloat(this.$data.playSpeedRate) + parseFloat(0.05)).toFixed(2);
+          },
+          speedDownClick(event) {
+            this.$data.playSpeedRate = (parseFloat(this.$data.playSpeedRate) - parseFloat(0.05)).toFixed(2);
+          },
+          playFromClick(event) {
+            if (this.$data.player) {
+              this.$data.abRepeatFrom = this.$data.player.getCurrentTime().toFixed(1);
+              this.setPlayerABRepeat();
+            }
+          },
+          playToClick(event) {
+            if (this.$data.player) {
+              this.$data.abRepeatTo = this.$data.player.getCurrentTime().toFixed(1);
+              this.setPlayerABRepeat();
+            }
+          },
+          updateDurationAndAbRepeatTo() {
+            let duration = this.$data.player.getDuration();
+            if (duration) {
+              this.$data.duration = duration.toFixed(1);
 
-    function onPlayerReady(event) {
-      setInterval(updateDurationAndAbRepeatTo, 1000);
-      updatePlaySpeed();
-    }
+              const abRepeatFrom = parseFloat(this.$data.abRepeatFrom);
+              const abRepeatTo = parseFloat(this.$data.abRepeatTo);
+              if (abRepeatFrom >= duration) {
+                this.$data.abRepeatFrom = 0;
+              }
+              if (abRepeatTo == 0 || abRepeatFrom >= abRepeatTo || abRepeatTo > duration) {
+                this.$data.abRepeatTo = duration;
+              }
+            }
+          },
+          setPlayerABRepeat() {
+            if (this.$data.player) {
+              this.$data.player.loadVideoById({
+                videoId: this.urlToYoutubeVideoId(this.$data.videoUrl),
+                startSeconds: this.$data.abRepeatFrom,
+                endSeconds: this.$data.abRepeatTo
+              })
+            }
+          },
+          urlToYoutubeVideoId(url) {
+            const vid_regex = /(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+            return url === "" ? "" : url.match(vid_regex)[1];
+          }
+        },
+        watch: {
+          playSpeedRate(val) {
+            let speedRate = this.$data.playSpeedRate;
+            speedRate = Math.min(speedRate, this.$data.maxSpeed);
+            speedRate = Math.max(speedRate, this.$data.minSpeed);
+            this.$data.playSpeedRate = speedRate;
 
-    function updateDurationAndAbRepeatTo() {
-      let duration = player.getDuration();
-      if (duration) {
-        duration = duration.toFixed(1);
-        getDomById('duration1').textContent = duration;
-        getDomById('duration2').textContent = duration;
-        getDomById('abRepeatFrom').max = duration;
-        getDomById('abRepeatTo').max = duration;
-
-        const abRepeatFrom = parseFloat(getDomById('abRepeatFrom').value);
-        const abRepeatTo = parseFloat(getDomById('abRepeatTo').value);
-        if (abRepeatFrom >= duration) {
-          getDomById('abRepeatFrom').value = 0;
-        }
-        if (abRepeatTo == 0 || abRepeatFrom >= abRepeatTo || abRepeatTo > duration) {
-          getDomById('abRepeatTo').value = duration;
-        }
+            if (this.$data.player) {
+              this.$data.player.setPlaybackRate(speedRate);
+            }
+          },
+        },
+        mounted() {
+          window.onYouTubeIframeAPIReady = this.onYouTubeIframeAPIReady;
+          const tag = document.createElement('script');
+          tag.src = "https://www.youtube.com/iframe_api";
+          const firstScriptTag = document.getElementsByTagName('script')[0];
+          firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        },
       }
-    }
-
-    function onPlayerStateChange(event) {
-      if (event.data == YT.PlayerState.ENDED && getDomById('loopSwitch').checked) {
-        player.seekTo(getDomById('abRepeatFrom').value);
-        player.playVideo();
-      }
-    }
-
-    function updatePlaySpeed() {
-      let speedRate = parseFloat(getDomById('playSpeedRate').value);
-      if (speedRate > maxSpeed) {
-        speedRate = maxSpeed
-        getDomById('playSpeedRate').value = maxSpeed;
-      }
-      else if (speedRate < minSpeed) {
-        speedRate = minSpeed;
-        getDomById('playSpeedRate').value = minSpeed;
-      }
-      if (player) {
-        player.setPlaybackRate(speedRate);
-      }
-    }
-
-    function setPlayerABRepeat() {
-      if (player) {
-        player.loadVideoById({
-          videoId: urlToYoutubeVideoId(getDomById('videoUrl').value),
-          startSeconds: getDomById('abRepeatFrom').value,
-          endSeconds: getDomById('abRepeatTo').value
-        })
-      }
-    }
-
-    function urlToYoutubeVideoId(url) {
-      const vid_regex = /(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
-      return url === "" ? "" : url.match(vid_regex)[1];
-    }
-
-    function getDomById(id) { return document.getElementById(id); }
+    )
   </script>
 </body>
 
