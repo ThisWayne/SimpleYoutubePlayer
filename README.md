@@ -19,3 +19,9 @@ You can just use the link down below with your browser, no more Mobile App to se
 I'm learning to play drums. When learning a new song, I usually play along with the song on YouTube Mobile App. But the original speed of the song might be too fast to follow. I need to slow down the song to the speed which I'm able to play along with, practice and gradually speed up a bit again and again, until I can play along with the song in the original speed.
 
 If you need to control the YouTube video, hope this helps you as well.
+
+## To Do
+
+* url with parameter for time code
+* url with parameter for video url
+* share button
