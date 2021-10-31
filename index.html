@@ -44,7 +44,7 @@
       <section class="video-control-wrapper">
         <div class="url-load-wrapper">
           <div class="video-url-wrapper">
-            <input type="url" v-model="videoUrl" />
+            <input type="url" v-model="inputVideoUrl" />
           </div>
           <div class="load-url-btn-wrapper">
             <button v-on:click="handleLoadUrlClick">Load</button>
@@ -97,7 +97,8 @@
         data() {
           return {
             player: {},
-            videoUrl: 'https://www.youtube.com/watch?v=nHlJODYBLKs',
+            youtubeVideoId: 'r2S1I_ien6A',
+            inputVideoUrl: 'https://www.youtube.com/watch?v=r2S1I_ien6A',
             minSpeed: 0.25,
             maxSpeed: 2,
             playSpeedRate: 1,
@@ -107,10 +108,17 @@
             isLoopOn: true,
           }
         },
+        mounted() {
+          const ytVideoIdParam = new URL(location.href).searchParams.get('youtubeVideoId');
+          if (ytVideoIdParam) {
+            this.$data.youtubeVideoId = ytVideoIdParam;
+            this.$data.inputVideoUrl = `https://www.youtube.com/watch?v=${ytVideoIdParam}`;
+          }
+        },
         methods: {
           onYouTubeIframeAPIReady(event) {
             this.$data.player = new YT.Player('player', {
-              videoId: this.urlToYoutubeVideoId(this.$data.videoUrl),
+              videoId: this.$data.youtubeVideoId,
               playerVars: {
                 playsinline: '1'
               },
@@ -130,8 +138,12 @@
             }
           },
           handleLoadUrlClick(event) {
+            this.$data.youtubeVideoId = this.urlToYoutubeVideoId(this.$data.inputVideoUrl);
             if (this.$data.player) {
-              this.$data.player.loadVideoById(this.urlToYoutubeVideoId(this.$data.videoUrl));
+              this.$data.player.loadVideoById(this.$data.youtubeVideoId);
+              const searchParams = new URLSearchParams(window.location.search);
+              searchParams.set("youtubeVideoId", this.$data.youtubeVideoId);
+              window.location.search = searchParams.toString();
             }
           },
           handleSpeedUpClick(event) {
@@ -158,7 +170,7 @@
           handlePlayerAbRepeatChange() {
             if (this.$data.player) {
               this.$data.player.loadVideoById({
-                videoId: this.urlToYoutubeVideoId(this.$data.videoUrl),
+                videoId: this.$data.youtubeVideoId,
                 startSeconds: this.$data.abRepeatFrom,
                 endSeconds: this.$data.abRepeatTo
               })
